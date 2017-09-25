@@ -21,7 +21,9 @@ Or install it yourself as:
 ```ruby
 class CatalogSerializer < Flexserializer::Base
   # ----- example default_attributes
-  default_attributes :id, :title, :description
+  default_attributes do
+    attributes :id, :title, :description
+  end
   
   # ----- example group :for_list
   group(:for_list) do
