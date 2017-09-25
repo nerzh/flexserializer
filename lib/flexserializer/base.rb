@@ -14,7 +14,6 @@ module Flexserializer
     end
 
     def initialize(object, options = {})
-      self.class.data_default_attributes ||= []
       define_attributes(options[:group])
       super(object, options)
     end
@@ -22,7 +21,6 @@ module Flexserializer
     def define_attributes(group)
       clear_data
       define_default_attrs
-      return unless self.class.groups.keys.include?(group)
       define_group_attrs(group)
     end
 
@@ -31,10 +29,12 @@ module Flexserializer
     end
 
     def define_default_attrs
+      return if !self.class.data_default_attributes
       self.class.data_default_attributes.call
     end
 
     def define_group_attrs(group)
+      return if !self.class.groups or !self.class.groups.keys.include?(group)
       self.class.groups[group].call
     end
   end
