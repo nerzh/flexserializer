@@ -9,10 +9,13 @@ module Flexserializer
 
       def group(*group_names, &block)
         self.groups ||= {}
-        group_names.each { |group_name| self.groups[group_name] = block }
+        group_names.each do |group_name|
+          self.groups[group_name] ||= []
+          self.groups[group_name] << block
+        end
       end
     end
-
+    
     def initialize(object, options = {})
       define_attributes(options[:group])
       super(object, options)
@@ -35,7 +38,7 @@ module Flexserializer
 
     def define_group_attrs(group)
       return if !self.class.groups or !self.class.groups.keys.include?(group)
-      self.class.groups[group].call
+      self.class.groups[group].each { |block| block.call }
     end
   end
 end
