@@ -22,29 +22,40 @@ Or install it yourself as:
 class CatalogSerializer < Flexserializer::Base
   # ----- example default_attributes
   default_attributes do
-    attributes :id, :title, :description
+    attributes :attribute_8, :attribute_9, :attribute_10
   end
   
-  # ----- example group :for_list
-  group(:for_list) do
-    attributes :small_description, :product_count
+  # Examples of the group definitions
+  
+  1)
+  group(:group_name_1) do
+    attributes :attribute_1
   end
-    # or same
-  group(:for_list) do
-    attribute :small_description
-    attribute :product_count
-  end
-    
-  # ----- example group :with_products
-  group(:with_products) do
-    attributes :small_description, :images
-    has_many :products
+
+  2)
+  group(:group_name_2, :group_name_3) do
+    attributes :attribute_1, ::attribute_2
+    attribute  :attribute_3
+    has_one :attribute_4
+    has_may ::attribute_5
+    ...
   end
     
   # If you want to transfer the group name to the next Serializer 
-  def images
+  def attribute_3
     options = instance_options[:group] ? {group: instance_options[:group]} : {}
     ActiveModelSerializers::SerializableResource.new(object.images, options).serializable_hash
+  end
+end
+```
+
+# Call group
+
+for example
+```ruby
+class TestController < ApplicationController
+  def index
+    @hash = ActiveModelSerializers::SerializableResource.new(Model.all, {group: :group_name_3}).serializable_hash
   end
 end
 ```

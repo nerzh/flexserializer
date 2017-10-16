@@ -7,9 +7,9 @@ module Flexserializer
         self.data_default_attributes = block
       end
 
-      def group(group_name, &block)
-        self.groups           ||= {}
-        self.groups[group_name] = block
+      def group(*group_names, &block)
+        self.groups ||= {}
+        group_names.each { |group_name| self.groups[group_name] = block }
       end
     end
 
