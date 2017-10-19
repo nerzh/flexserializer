@@ -1,4 +1,5 @@
-# Flexserializer
+## Flexserializer
+# Conveniently structuring your attributes into groups for ActiveModelSerializer
 
 ## Installation
 
@@ -28,16 +29,15 @@ class CatalogSerializer < Flexserializer::Base
   # Examples of the group definitions
   
   1)
-  group(:group_name_1) do
-    attributes :attribute_1
+  group(:group_name_1, :group_name_2, :group_name_3) do
+    attributes :attribute_1, :attribute_2
+    has_many   :attributes_5
   end
 
   2)
-  group(:group_name_2, :group_name_3) do
-    attributes :attribute_1, ::attribute_2
+  group(:group_name_3) do
     attribute  :attribute_3
-    has_one :attribute_4
-    has_may ::attribute_5
+    has_one    :attribute_4
     ...
   end
     
