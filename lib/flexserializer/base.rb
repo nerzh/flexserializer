@@ -40,7 +40,7 @@ module Flexserializer
     end
 
     def define_group_attrs
-      return unless self.class.groups or self.class.groups.keys.include?(group_name)
+      return if !self.class.groups or !self.class.groups.keys.include?(group_name)
       self.class.groups[group_name].each { |block| block.call }
     end
   end
