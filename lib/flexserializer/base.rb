@@ -35,17 +35,12 @@ module Flexserializer
     end
 
     def define_default_attrs
-      return if !self.class.data_default_attributes
+      return unless self.class.data_default_attributes
       self.class.data_default_attributes.call
     end
 
     def define_group_attrs
-        p "group_name #{group_name} - inst:#{self.object_id} - #{self.class.object_id}"
-      if !self.class.groups or !self.class.groups.keys.include?(group_name)
-        p "group_name #{group_name} - inst:#{self.object_id} - #{self.class.object_id}"
-        p self.class
-        return
-      end
+      return unless self.class.groups or self.class.groups.keys.include?(group_name)
       self.class.groups[group_name].each { |block| block.call }
     end
   end
