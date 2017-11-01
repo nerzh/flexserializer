@@ -9,22 +9,25 @@ module Flexserializer
 
       def group(*group_names, &block)
         self.groups ||= {}
-        group_names.each do |group_name|
-          self.groups[group_name] ||= []
-          self.groups[group_name] << block
+        group_names.each do |name_group|
+          self.groups[name_group] ||= []
+          self.groups[name_group] << block
         end
       end
     end
+
+    attr_reader :group_name
     
     def initialize(object, options = {})
-      define_attributes(options[:group])
+      @group_name = options[:group]
+      define_attributes
       super(object, options)
     end
 
-    def define_attributes(group)
+    def define_attributes
       clear_data
       define_default_attrs
-      define_group_attrs(group)
+      define_group_attrs
     end
 
     def clear_data
@@ -36,9 +39,14 @@ module Flexserializer
       self.class.data_default_attributes.call
     end
 
-    def define_group_attrs(group)
-      return if !self.class.groups or !self.class.groups.keys.include?(group)
-      self.class.groups[group].each { |block| block.call }
+    def define_group_attrs
+        p "group_name #{group_name} - inst:#{self.object_id} - #{self.class.object_id}"
+      if !self.class.groups or !self.class.groups.keys.include?(group_name)
+        p "group_name #{group_name} - inst:#{self.object_id} - #{self.class.object_id}"
+        p self.class
+        return
+      end
+      self.class.groups[group_name].each { |block| block.call }
     end
   end
 end
