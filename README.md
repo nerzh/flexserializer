@@ -23,28 +23,27 @@ Or install it yourself as:
 class CatalogSerializer < Flexserializer::Base
   # ----- example default_attributes
   default_attributes do
-    attributes :attribute_8, :attribute_9, :attribute_10
+    define_attributes :attribute_8, :attribute_9, :attribute_10
   end
   
   # Examples of the group definitions
   
   1)
   group(:group_name_1, :group_name_2, :group_name_3) do
-    attributes :attribute_1, :attribute_2
-    has_many   :attributes_5
+    define_attributes :attribute_1, :attribute_2
+    define_has_many   :attributes_5
   end
 
   2)
   group(:group_name_3) do
-    attribute  :attribute_3
-    has_one    :attribute_4
+    define_attribute  :attribute_3
+    define_has_one    :attribute_4
     ...
   end
     
   # If you want to transfer the group name to the next Serializer 
   def attribute_3
-    options = instance_options[:group] ? {group: instance_options[:group]} : {}
-    ActiveModelSerializers::SerializableResource.new(object.images, options).serializable_hash
+    ActiveModelSerializers::SerializableResource.new(object.images, define_options).serializable_hash
   end
 end
 ```
