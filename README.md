@@ -20,30 +20,39 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
-class CatalogSerializer < Flexserializer::Base
-  # ----- example default_attributes
+# default_attributes do
+#   define_attributes :attr1, :attr2
+#   define_attribute  :attr3
+#   define_has_one    :attr4
+#   define_has_many   :attr5
+# end
+
+class UserSerializer < Flexserializer::Base
+
+  # Example default_attributes for all groups
   default_attributes do
-    define_attributes :attribute_8, :attribute_9, :attribute_10
+    define_attributes :id, :name, :last_name
   end
   
   # Examples of the group definitions
   
-  1)
-  group(:group_name_1, :group_name_2, :group_name_3) do
-    define_attributes :attribute_1, :attribute_2
-    define_has_many   :attributes_5
+  1) group can have many different names for flexible naming
+  group(:with_names, :with_ages) do
+    define_attribute :age
   end
-
-  2)
-  group(:group_name_3) do
-    define_attribute  :attribute_3
-    define_has_one    :attribute_4
-    ...
+  
+  or
+  
+  2) single name
+  group(:with_avatar) do
+    define_attribute :avatar
   end
     
-  # If you want to transfer the group name to the next Serializer 
-  def attribute_3
-    ActiveModelSerializers::SerializableResource.new(object.images, define_options).serializable_hash
+  # If you want to transfer the group name to the next Serializer.
+  # define_options - hash with your options
+  def avatar
+    options = define_options.merge({group: :for_user})
+    ActiveModelSerializers::SerializableResource.new(object.avatar, options).serializable_hash
   end
 end
 ```
@@ -54,7 +63,7 @@ for example
 ```ruby
 class TestController < ApplicationController
   def index
-    @hash = ActiveModelSerializers::SerializableResource.new(Model.all, {group: :group_name_3}).serializable_hash
+    @hash = ActiveModelSerializers::SerializableResource.new(Model.all, {group: :group_name_1}).serializable_hash
   end
 end
 ```
