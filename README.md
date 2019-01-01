@@ -36,14 +36,12 @@ class UserSerializer < Flexserializer::Base
   
   # Examples of the group definitions
   
-  1) group can have many different names for flexible naming
+  # 1) group can have many different names for flexible naming
   group(:with_names, :with_ages) do
     define_attribute :age
   end
   
-  or
-  
-  2) single name
+  # 2) or single name
   group(:with_avatar) do
     define_attribute :avatar
   end
